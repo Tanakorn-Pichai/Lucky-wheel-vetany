@@ -520,7 +520,7 @@ body.admin-page {
     position: absolute;
     width: 90px;
     height: 90px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    background: linear-gradient(135deg, #38b000 0%, #70e000 100%);
     border-radius: 50%;
     top: -45px;
     left: 50%;
@@ -536,17 +536,20 @@ body.admin-page {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset -2px -2px 5px rgba(0, 0, 0, 0.2), inset 2px 2px 5px rgba(255, 255, 255, 0.5);
     transition: all 0.3s ease;
     user-select: none;
-    border: 3px solid #ffeb3b;
+    border: 3px solid #b7ef3a;
 }
 
 .spinner-btn:hover {
     transform: translateX(-50%) scale(1.08);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4), inset -2px -2px 5px rgba(0, 0, 0, 0.2), inset 2px 2px 5px rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, #2d9d00 0%, #5fd400 100%);
 }
 
 .spinner-btn::after {
-    content: '🎡';
-    font-size: 35px;
+    content: 'SPIN';
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 800;
 }
 
 .spinner-btn.spinning {
@@ -633,12 +636,12 @@ body.admin-page {
     .spinner-btn {
         width: 70px;
         height: 70px;
-        border: 2px solid #ffeb3b;
+        border: 2px solid #b7ef3a;
         top: -35px;
     }
 
     .spinner-btn::after {
-        font-size: 28px;
+        font-size: 16px;
     }
 
     .wheel .number span {

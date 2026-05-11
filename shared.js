@@ -16,7 +16,6 @@ let spinSpeed = 5;
 let currentRotation = 0;
 const AUTO_COLORS = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#74b9ff', '#fd79a8', '#fdcb6e', '#c792ea', '#7ed6df', '#ff9f43'];
 
-// ===== STORAGE FUNCTIONS =====
 function loadSettings() {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {

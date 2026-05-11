@@ -178,7 +178,7 @@ function spinWheel() {
 
         setTimeout(() => {
             const winningPrize = prizes[finalIndex];
-            resultDisplay.innerHTML = `🎉 ${winningPrize.name} 🎉`;
+            resultDisplay.innerHTML = ` ${winningPrize.name} `;
             resultDisplay.classList.add('show');
             isSpinning = false;
         }, finalIndex !== pointedIndex ? 1000 : 0);
