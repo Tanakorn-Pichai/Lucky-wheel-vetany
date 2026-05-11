@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>ตั้งค่าวงล้อ - Admin</title>
+</head>
+<body class="admin-page">
+    <div class="admin-wrapper">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="header-content">
+                <h1>⚙️ ตั้งค่าวงล้อสุ่ม</h1>
+                <a href="index.html" class="back-button">← กลับไปหน้าหลัก</a>
+            </div>
+        </div>
+
+        <!-- Admin Content -->
+        <div class="admin-content">
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="panel-section">
+                    <h2>เพิ่มรางวัลใหม่</h2>
+                    <div class="input-group">
+                        <input type="text" id="prizeInput" placeholder="ชื่อรางวัล" maxlength="20">
+                        <button onclick="addPrize()">➕ เพิ่ม</button>
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>รางวัลและอัตราส่วน</h2>
+                    <div id="prizeList" class="prize-list"></div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>ความเร็วการหมุน</h2>
+                    <div class="speed-control">
+                        <input type="range" id="spinSpeed" min="1" max="10" value="5" oninput="updateSpeed()">
+                        <span id="speedValue">5</span> วินาที
+                    </div>
+                </div>
+
+                <div class="panel-buttons">
+                    <button onclick="savePrizeSettings()" class="btn-save">💾 บันทึก</button>
+                    <button onclick="resetWheel()" class="btn-reset">🔄 รีเซ็ต</button>
+                </div>
+            </div>
+
+            <!-- Preview Panel -->
+            <div class="preview-panel">
+                <h2>📊 ตัวอย่าง</h2>
+                <div class="preview-wheel-container">
+                    <div class="spinner-btn"></div>
+                    <div class="wheel" id="previewWheel"></div>
+                </div>
+                <div class="stats-box">
+                    <div id="statsContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="shared.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
