@@ -14,7 +14,19 @@ let prizes = [
 
 let spinSpeed = 5;
 let currentRotation = 0;
-const AUTO_COLORS = ['#ff6b6b', '#4ecdc4', '#ffe66d', '#a8e6cf', '#74b9ff', '#fd79a8', '#fdcb6e', '#c792ea', '#7ed6df', '#ff9f43'];
+
+function generateUniqueColor(index, total) {
+    const hue = Math.round((index * (360 / Math.max(total, 1))) % 360);
+    return `hsl(${hue} 82% 66%)`;
+}
+
+function applyUniquePrizeColors() {
+    const total = prizes.length;
+    prizes = prizes.map((prize, index) => ({
+        ...prize,
+        color: generateUniqueColor(index, total)
+    }));
+}
 
 function loadSettings() {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -23,6 +35,7 @@ function loadSettings() {
         prizes = data.prizes || prizes;
         spinSpeed = data.spinSpeed || 5;
     }
+    applyUniquePrizeColors();
 }
 
 function saveSettings(showAlert = true) {
@@ -90,9 +103,10 @@ function addPrize() {
 
     prizes.push({
         name: prizeName,
-        color: AUTO_COLORS[prizes.length % AUTO_COLORS.length],
+        color: '#000000',
         odds: 1
     });
+    applyUniquePrizeColors();
 
     prizeInput.value = '';
 
@@ -121,6 +135,7 @@ function removePrize(index) {
     }
 
     prizes.splice(index, 1);
+    applyUniquePrizeColors();
     
     saveSettings(false);
     
@@ -181,6 +196,7 @@ function resetWheel() {
             { name: '5 ฿', color: '#fd79a8', odds: 1 },
             { name: '200 ฿', color: '#fdcb6e', odds: 1 },
         ];
+        applyUniquePrizeColors();
 
         spinSpeed = 5;
         currentRotation = 0;
