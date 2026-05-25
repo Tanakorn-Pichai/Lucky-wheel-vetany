@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
@@ -8,26 +8,20 @@
 </head>
 <body class="display-page">
     <div class="display-container">
-
         <div class="display-header">
+            <div class="header-nav-row">
+                <a href="home.php" class="back-button">← กลับ</a>
+            </div>
             <div class="header-top">
-                <a href="home.html" class="back-button">← กลับ</a>
                 <h1>วงล้อสุ่ม</h1>
-                <div class="header-spacer"></div>
             </div>
         </div>
-
 
         <div class="wheel-display">
             <div class="wheel-pointer" aria-hidden="true"></div>
             <div class="spinner-btn"></div>
             <div class="wheel" id="wheel"></div>
             <div class="result-display" id="resultDisplay"></div>
-        </div>
-
-     
-        <div class="display-info">
-            <p>กดปุ่มหรือกด SPACE เพื่อหมุนวงล้อ</p>
         </div>
     </div>
 

@@ -99,9 +99,9 @@ function renderPrizeList() {
             <div class="prize-color" style="background-color: ${prize.color};"></div>
             <div class="prize-name">${prize.name}</div>
             <div class="prize-odds">
-                <label for="odds-${index}">อัตรา:</label>
+                <label for="odds-${index}">อัตราชนะ (%):</label>
                 <input type="number" id="odds-${index}" min="1" max="100" value="${prize.odds}" 
-                       onchange="updateOdds(${index}, this.value)">
+                       onchange="updateOdds(${index}, this.value)"> %
             </div>
             <button onclick="removePrize(${index})">✕</button>
         `;

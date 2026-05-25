@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20260525b">
     <title>ตั้งค่าวงล้อ - Admin</title>
 </head>
 <body class="admin-page">
@@ -12,7 +12,7 @@
         <div class="admin-header">
             <div class="header-content">
                 <h1> ตั้งค่าวงล้อสุ่ม</h1>
-                <a href="home.html" class="back-button">← กลับ</a>
+                <a href="home.php" class="back-button">← กลับ</a>
             </div>
         </div>
 
@@ -40,6 +40,29 @@
                     </div>
                 </div>
 
+                <div class="panel-section">
+                    <h2>ขนาดรูปรางวัล</h2>
+                    <div class="speed-control">
+                        <input type="range" id="imageSize" min="28" max="120" value="64" oninput="updateImageSize()">
+                        <span id="imageSizeValue">64</span> px
+                    </div>
+                </div>
+
+                <div class="panel-section">
+                    <h2>การันตีรางวัล</h2>
+                    <div class="guarantee-control">
+                        <label><input type="checkbox" id="guaranteeEnabled" onchange="updateGuaranteeSettings()"> เปิดใช้งาน</label>
+                        <div class="guarantee-row">
+                            ทุก <input type="number" id="guaranteeEvery" min="1" value="20" onchange="updateGuaranteeSettings()"> ครั้ง
+                        </div>
+                        <div class="guarantee-row">
+                            ให้ออก:
+                            <select id="guaranteePrizeIndex" onchange="updateGuaranteeSettings()"></select>
+                        </div>
+                        <div id="guaranteeDebug" class="guarantee-debug"></div>
+                    </div>
+                </div>
+
                 <div class="panel-buttons">
                     <button onclick="savePrizeSettings()" class="btn-save">บันทึก</button>
                     <button onclick="resetWheel()" class="btn-reset">รีเซ็ต</button>
@@ -60,7 +83,7 @@
         </div>
     </div>
 
-    <script src="shared.js"></script>
-    <script src="admin.js"></script>
+    <script src="shared.js?v=20260525b"></script>
+    <script src="admin.js?v=20260525b"></script>
 </body>
 </html>

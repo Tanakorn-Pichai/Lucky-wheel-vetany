@@ -69,8 +69,23 @@ function renderWheel() {
     });
 
     wheel.style.background = `conic-gradient(from 0deg, ${conicStops.join(', ')})`;
+    wheel.style.setProperty('--segment-image-size', `${prizeImageSize}px`);
     wheel.style.border = '8px solid white';
     wheel.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.2), 0 10px 40px rgba(0, 0, 0, 0.3)';
+
+    // Create per-segment background image overlays (optional)
+    currentDegree = 0;
+    prizes.forEach((prize) => {
+        if (prize.image && prize.useImageBg) {
+            const seg = document.createElement('div');
+            seg.className = 'segment-bg-image';
+            seg.style.backgroundImage = `url("${prize.image}")`;
+            seg.style.setProperty('--start', `${currentDegree}deg`);
+            seg.style.setProperty('--end', `${currentDegree + segmentDegrees}deg`);
+            wheel.appendChild(seg);
+        }
+        currentDegree += segmentDegrees;
+    });
 
     // Create number segments positioned around the wheel
     currentDegree = 0;
@@ -83,11 +98,24 @@ function renderWheel() {
         numberDiv.style.setProperty('--angle', `${textAngle}deg`);
         numberDiv.style.transform = `rotate(${textAngle}deg)`;
 
+        const content = document.createElement('div');
+        content.className = 'segment-content';
+        content.style.transform = `translateX(var(--label-radius, 130px)) rotate(${-textAngle}deg)`;
+
+        if (prize.image) {
+            const img = document.createElement('img');
+            img.className = 'segment-image';
+            img.src = prize.image;
+            img.alt = prize.name;
+            img.onerror = () => { img.remove(); };
+            content.appendChild(img);
+        }
+
         const span = document.createElement('span');
         span.textContent = prize.name;
-        span.style.transform = `translateX(var(--label-radius, 130px)) rotate(${-textAngle}deg)`;
+        content.appendChild(span);
 
-        numberDiv.appendChild(span);
+        numberDiv.appendChild(content);
         wheel.appendChild(numberDiv);
 
         currentDegree += segmentDegrees;
@@ -111,10 +139,9 @@ function getPointedPrizeIndex(rotationDeg) {
 }
 
 function findNextPlayableIndex(startIndex) {
-    const minPlayableOdds = 1;
     for (let i = 0; i < prizes.length; i++) {
         const idx = (startIndex + i) % prizes.length;
-        if (parseFloat(prizes[idx].odds || 0) >= minPlayableOdds) return idx;
+        if (parseFloat(prizes[idx].odds || 0) > 0) return idx;
     }
     return startIndex;
 }
@@ -135,25 +162,39 @@ function spinWheel() {
     const wheel = document.getElementById('wheel');
     const resultDisplay = document.getElementById('resultDisplay');
     const totalOdds = getTotalOdds();
+    const guaranteedIndex = getGuaranteedWinnerIndex();
+    const isGuaranteedSpin = guaranteedIndex >= 0;
 
-    if (totalOdds <= 0) {
+    if (!isGuaranteedSpin && totalOdds <= 0) {
         alert('ยังไม่มีรางวัล');
+        return;
+    }
+
+    if (!isGuaranteedSpin && Math.abs(totalOdds - 100) > 0.0001) {
+        alert('เปอร์เซ็นต์รวมต้องเท่ากับ 100%');
         return;
     }
 
     isSpinning = true;
     resultDisplay.classList.remove('show');
 
-    // Get winner based on odds
-    let randomIndex = getWinnerByOdds();
-    randomIndex = findNextPlayableIndex(randomIndex);
+    if (isGuaranteedSpin) {
+        applyGuaranteedOddsForSpin(guaranteedIndex);
+    }
+
+    let randomIndex = isGuaranteedSpin ? guaranteedIndex : getWinnerByOdds();
+    if (!isGuaranteedSpin) {
+        randomIndex = findNextPlayableIndex(randomIndex);
+    }
     
     // Visual wheel segments are equal-size; odds are only for picking winner
     const segmentDegrees = 360 / prizes.length;
     const segmentStart = segmentDegrees * randomIndex;
     const edgePadding = segmentDegrees * 0.18;
     const randomInSegment = edgePadding + (Math.random() * (segmentDegrees - edgePadding * 2));
-    const targetOnSegment = segmentStart + randomInSegment;
+    const targetOnSegment = isGuaranteedSpin
+        ? segmentStart + (segmentDegrees / 2)
+        : segmentStart + randomInSegment;
     // conic-gradient starts at top (0deg), so top pointer is 0deg in our segment map
     const pointerAngle = 0;
     const normalizedCurrent = ((currentRotation % 360) + 360) % 360;
@@ -168,7 +209,7 @@ function spinWheel() {
     setTimeout(() => {
         currentRotation = targetRotation;
         const pointedIndex = getPointedPrizeIndex(currentRotation);
-        const finalIndex = findNextPlayableIndex(pointedIndex);
+        const finalIndex = isGuaranteedSpin ? guaranteedIndex : findNextPlayableIndex(pointedIndex);
 
         if (finalIndex !== pointedIndex) {
             currentRotation = getRotationToCenterIndex(currentRotation, finalIndex);
@@ -180,6 +221,10 @@ function spinWheel() {
             const winningPrize = prizes[finalIndex];
             resultDisplay.innerHTML = ` ${winningPrize.name} `;
             resultDisplay.classList.add('show');
+            registerSpinResult();
+            if (isGuaranteedSpin) {
+                restoreOddsAfterGuaranteedSpin();
+            }
             isSpinning = false;
         }, finalIndex !== pointedIndex ? 1000 : 0);
     }, spinSpeed * 1000);

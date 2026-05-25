@@ -15,14 +15,14 @@
 
         <div class="home-content">
             <div class="menu-card">
-                <a href="index.html" class="menu-link display-link">
+                <a href="index.php" class="menu-link display-link">
                     <h2>หมุนวงล้อ</h2>
                     <p>เล่นวงล้อสุ่มและได้รับรางวัล</p>
                 </a>
             </div>
 
             <div class="menu-card">
-                <a href="admin.html" class="menu-link admin-link-menu">
+                <a href="admin.php" class="menu-link admin-link-menu">
                     <h2>ตั้งค่า</h2>
                     <p>จัดการรางวัลและการตั้งค่า</p>
                 </a>
